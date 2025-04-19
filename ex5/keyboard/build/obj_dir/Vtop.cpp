@@ -10,19 +10,19 @@
 Vtop::Vtop(VerilatedContext* _vcontextp__, const char* _vcname__)
     : VerilatedModel{*_vcontextp__}
     , vlSymsp{new Vtop__Syms(contextp(), _vcname__, this)}
+    , clrn{vlSymsp->TOP.clrn}
     , clk{vlSymsp->TOP.clk}
-    , rst{vlSymsp->TOP.rst}
-    , ps2_data{vlSymsp->TOP.ps2_data}
     , ps2_clk{vlSymsp->TOP.ps2_clk}
-    , led{vlSymsp->TOP.led}
+    , ps2_data{vlSymsp->TOP.ps2_data}
     , seg0{vlSymsp->TOP.seg0}
     , seg1{vlSymsp->TOP.seg1}
+    , seg2{vlSymsp->TOP.seg2}
     , seg3{vlSymsp->TOP.seg3}
     , seg4{vlSymsp->TOP.seg4}
+    , seg5{vlSymsp->TOP.seg5}
     , seg6{vlSymsp->TOP.seg6}
     , seg7{vlSymsp->TOP.seg7}
-    , seg2{vlSymsp->TOP.seg2}
-    , seg5{vlSymsp->TOP.seg5}
+    , led{vlSymsp->TOP.led}
     , rootp{&(vlSymsp->TOP)}
 {
     // Register model with the context

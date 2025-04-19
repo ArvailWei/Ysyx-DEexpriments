@@ -21,19 +21,7 @@ VL_ATTR_COLD void Vtop___024root___eval_initial(Vtop___024root* vlSelf) {
     // Body
     Vtop___024root___eval_initial__TOP(vlSelf);
     vlSelf->__Vtrigrprev__TOP__clk = vlSelf->clk;
-    vlSelf->__Vtrigrprev__TOP__led = vlSelf->led;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg0__b 
-        = vlSelf->top__DOT____Vcellinp__myseg0__b;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg1__b 
-        = vlSelf->top__DOT____Vcellinp__myseg1__b;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg3__b 
-        = vlSelf->top__DOT____Vcellinp__myseg3__b;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg4__b 
-        = vlSelf->top__DOT____Vcellinp__myseg4__b;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg6__b 
-        = vlSelf->top__DOT____Vcellinp__myseg6__b;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg7__b 
-        = vlSelf->top__DOT____Vcellinp__myseg7__b;
+    vlSelf->__Vtrigrprev__TOP__clrn = vlSelf->clrn;
 }
 
 VL_ATTR_COLD void Vtop___024root___eval_initial__TOP(Vtop___024root* vlSelf) {
@@ -43,6 +31,9 @@ VL_ATTR_COLD void Vtop___024root___eval_initial__TOP(Vtop___024root* vlSelf) {
     // Body
     vlSelf->seg2 = 0x7fU;
     vlSelf->seg5 = 0x7fU;
+    vlSelf->top__DOT__current_state = 0U;
+    vlSelf->top__DOT__is_working = 0U;
+    vlSelf->clrn = 0U;
 }
 
 VL_ATTR_COLD void Vtop___024root___eval_final(Vtop___024root* vlSelf) {
@@ -99,28 +90,61 @@ VL_ATTR_COLD void Vtop___024root___dump_triggers__stl(Vtop___024root* vlSelf) {
 }
 #endif  // VL_DEBUG
 
+extern const VlUnpacked<CData/*6:0*/, 16> Vtop__ConstPool__TABLE_h25bdbd99_0;
+extern const VlUnpacked<CData/*6:0*/, 32> Vtop__ConstPool__TABLE_h99acd3d6_0;
+extern const VlUnpacked<CData/*7:0*/, 256> Vtop__ConstPool__TABLE_hac4e2788_0;
+
 VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___stl_sequent__TOP__0\n"); );
+    // Init
+    CData/*7:0*/ top__DOT__ascii_code;
+    top__DOT__ascii_code = 0;
+    CData/*7:0*/ __Vtableidx1;
+    __Vtableidx1 = 0;
+    CData/*4:0*/ __Vtableidx2;
+    __Vtableidx2 = 0;
+    CData/*4:0*/ __Vtableidx3;
+    __Vtableidx3 = 0;
+    CData/*4:0*/ __Vtableidx4;
+    __Vtableidx4 = 0;
+    CData/*4:0*/ __Vtableidx5;
+    __Vtableidx5 = 0;
+    CData/*3:0*/ __Vtableidx6;
+    __Vtableidx6 = 0;
+    CData/*3:0*/ __Vtableidx7;
+    __Vtableidx7 = 0;
     // Body
-    vlSelf->top__DOT____Vcellinp__myseg6__b = (0xfU 
-                                               & (IData)(vlSelf->top__DOT__count));
-    vlSelf->top__DOT____Vcellinp__myseg7__b = (0xfU 
-                                               & ((IData)(vlSelf->top__DOT__count) 
-                                                  >> 4U));
-    vlSelf->top__DOT____Vcellinp__myseg3__b = (0xfU 
-                                               & (IData)(vlSelf->top__DOT__ascii_code));
-    vlSelf->top__DOT____Vcellinp__myseg4__b = (0xfU 
-                                               & ((IData)(vlSelf->top__DOT__ascii_code) 
-                                                  >> 4U));
-    vlSelf->led = vlSelf->top__DOT__my_keyboard__DOT__fifo
-        [vlSelf->top__DOT__my_keyboard__DOT__r_ptr];
-    vlSelf->top__DOT____Vcellinp__myseg0__b = (0xfU 
-                                               & (IData)(vlSelf->led));
-    vlSelf->top__DOT____Vcellinp__myseg1__b = (0xfU 
-                                               & ((IData)(vlSelf->led) 
-                                                  >> 4U));
+    vlSelf->led = vlSelf->top__DOT__overflow;
+    vlSelf->top__DOT__data = vlSelf->top__DOT__my_ps2_keyboard__DOT__fifo
+        [vlSelf->top__DOT__my_ps2_keyboard__DOT__r_ptr];
+    __Vtableidx6 = (0xfU & (IData)(vlSelf->top__DOT__count));
+    vlSelf->seg6 = Vtop__ConstPool__TABLE_h25bdbd99_0
+        [__Vtableidx6];
+    __Vtableidx7 = (0xfU & ((IData)(vlSelf->top__DOT__count) 
+                            >> 4U));
+    vlSelf->seg7 = Vtop__ConstPool__TABLE_h25bdbd99_0
+        [__Vtableidx7];
+    __Vtableidx2 = ((0x1eU & ((IData)(vlSelf->top__DOT__kb_data) 
+                              << 1U)) | (IData)(vlSelf->top__DOT__is_working));
+    vlSelf->seg0 = Vtop__ConstPool__TABLE_h99acd3d6_0
+        [__Vtableidx2];
+    __Vtableidx3 = ((0x1eU & ((IData)(vlSelf->top__DOT__kb_data) 
+                              >> 3U)) | (IData)(vlSelf->top__DOT__is_working));
+    vlSelf->seg1 = Vtop__ConstPool__TABLE_h99acd3d6_0
+        [__Vtableidx3];
+    __Vtableidx1 = vlSelf->top__DOT__kb_data;
+    top__DOT__ascii_code = Vtop__ConstPool__TABLE_hac4e2788_0
+        [__Vtableidx1];
+    __Vtableidx4 = ((0x1eU & ((IData)(top__DOT__ascii_code) 
+                              << 1U)) | (IData)(vlSelf->top__DOT__is_working));
+    vlSelf->seg3 = Vtop__ConstPool__TABLE_h99acd3d6_0
+        [__Vtableidx4];
+    __Vtableidx5 = ((0x1eU & ((IData)(top__DOT__ascii_code) 
+                              >> 3U)) | (IData)(vlSelf->top__DOT__is_working));
+    vlSelf->seg4 = Vtop__ConstPool__TABLE_h99acd3d6_0
+        [__Vtableidx5];
 }
 
 VL_ATTR_COLD void Vtop___024root___eval_stl(Vtop___024root* vlSelf) {
@@ -143,28 +167,10 @@ VL_ATTR_COLD void Vtop___024root___dump_triggers__act(Vtop___024root* vlSelf) {
         VL_DBG_MSGF("         No triggers active\n");
     }
     if (vlSelf->__VactTriggered.at(0U)) {
-        VL_DBG_MSGF("         'act' region trigger index 0 is active: @(posedge clk)\n");
+        VL_DBG_MSGF("         'act' region trigger index 0 is active: @(posedge clk or negedge clrn)\n");
     }
     if (vlSelf->__VactTriggered.at(1U)) {
-        VL_DBG_MSGF("         'act' region trigger index 1 is active: @([changed] led)\n");
-    }
-    if (vlSelf->__VactTriggered.at(2U)) {
-        VL_DBG_MSGF("         'act' region trigger index 2 is active: @([changed] top.__Vcellinp__myseg0__b)\n");
-    }
-    if (vlSelf->__VactTriggered.at(3U)) {
-        VL_DBG_MSGF("         'act' region trigger index 3 is active: @([changed] top.__Vcellinp__myseg1__b)\n");
-    }
-    if (vlSelf->__VactTriggered.at(4U)) {
-        VL_DBG_MSGF("         'act' region trigger index 4 is active: @([changed] top.__Vcellinp__myseg3__b)\n");
-    }
-    if (vlSelf->__VactTriggered.at(5U)) {
-        VL_DBG_MSGF("         'act' region trigger index 5 is active: @([changed] top.__Vcellinp__myseg4__b)\n");
-    }
-    if (vlSelf->__VactTriggered.at(6U)) {
-        VL_DBG_MSGF("         'act' region trigger index 6 is active: @([changed] top.__Vcellinp__myseg6__b)\n");
-    }
-    if (vlSelf->__VactTriggered.at(7U)) {
-        VL_DBG_MSGF("         'act' region trigger index 7 is active: @([changed] top.__Vcellinp__myseg7__b)\n");
+        VL_DBG_MSGF("         'act' region trigger index 1 is active: @(posedge clk)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -179,28 +185,10 @@ VL_ATTR_COLD void Vtop___024root___dump_triggers__nba(Vtop___024root* vlSelf) {
         VL_DBG_MSGF("         No triggers active\n");
     }
     if (vlSelf->__VnbaTriggered.at(0U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 0 is active: @(posedge clk)\n");
+        VL_DBG_MSGF("         'nba' region trigger index 0 is active: @(posedge clk or negedge clrn)\n");
     }
     if (vlSelf->__VnbaTriggered.at(1U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @([changed] led)\n");
-    }
-    if (vlSelf->__VnbaTriggered.at(2U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 2 is active: @([changed] top.__Vcellinp__myseg0__b)\n");
-    }
-    if (vlSelf->__VnbaTriggered.at(3U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 3 is active: @([changed] top.__Vcellinp__myseg1__b)\n");
-    }
-    if (vlSelf->__VnbaTriggered.at(4U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 4 is active: @([changed] top.__Vcellinp__myseg3__b)\n");
-    }
-    if (vlSelf->__VnbaTriggered.at(5U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 5 is active: @([changed] top.__Vcellinp__myseg4__b)\n");
-    }
-    if (vlSelf->__VnbaTriggered.at(6U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 6 is active: @([changed] top.__Vcellinp__myseg6__b)\n");
-    }
-    if (vlSelf->__VnbaTriggered.at(7U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 7 is active: @([changed] top.__Vcellinp__myseg7__b)\n");
+        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @(posedge clk)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -210,49 +198,36 @@ VL_ATTR_COLD void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___ctor_var_reset\n"); );
     // Body
+    vlSelf->clrn = 0;
     vlSelf->clk = 0;
-    vlSelf->rst = 0;
-    vlSelf->ps2_data = 0;
     vlSelf->ps2_clk = 0;
-    vlSelf->led = 0;
+    vlSelf->ps2_data = 0;
     vlSelf->seg0 = 0;
     vlSelf->seg1 = 0;
+    vlSelf->seg2 = 0;
     vlSelf->seg3 = 0;
     vlSelf->seg4 = 0;
+    vlSelf->seg5 = 0;
     vlSelf->seg6 = 0;
     vlSelf->seg7 = 0;
-    vlSelf->seg2 = 0;
-    vlSelf->seg5 = 0;
+    vlSelf->led = 0;
     vlSelf->top__DOT__count = 0;
+    vlSelf->top__DOT__current_state = 0;
+    vlSelf->top__DOT__is_working = 0;
+    vlSelf->top__DOT__kb_data = 0;
+    vlSelf->top__DOT__data = 0;
+    vlSelf->top__DOT__overflow = 0;
     vlSelf->top__DOT__ready = 0;
-    vlSelf->top__DOT__nextdata = 0;
-    vlSelf->top__DOT__ascii_code = 0;
-    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
-        vlSelf->top__DOT__data_Judge[__Vi0] = 0;
-    }
-    vlSelf->top__DOT____Vcellinp__myseg0__b = 0;
-    vlSelf->top__DOT____Vcellinp__myseg1__b = 0;
-    vlSelf->top__DOT____Vcellinp__myseg3__b = 0;
-    vlSelf->top__DOT____Vcellinp__myseg4__b = 0;
-    vlSelf->top__DOT____Vcellinp__myseg6__b = 0;
-    vlSelf->top__DOT____Vcellinp__myseg7__b = 0;
-    vlSelf->top__DOT__my_keyboard__DOT__overflow = 0;
-    vlSelf->top__DOT__my_keyboard__DOT__buffer = 0;
+    vlSelf->top__DOT__my_ps2_keyboard__DOT__buffer = 0;
     for (int __Vi0 = 0; __Vi0 < 8; ++__Vi0) {
-        vlSelf->top__DOT__my_keyboard__DOT__fifo[__Vi0] = 0;
+        vlSelf->top__DOT__my_ps2_keyboard__DOT__fifo[__Vi0] = 0;
     }
-    vlSelf->top__DOT__my_keyboard__DOT__w_ptr = 0;
-    vlSelf->top__DOT__my_keyboard__DOT__r_ptr = 0;
-    vlSelf->top__DOT__my_keyboard__DOT__count = 0;
-    vlSelf->top__DOT__my_keyboard__DOT__ps2_clk_sync = 0;
-    vlSelf->top__DOT__my_keyboard__DOT____Vlvbound_h1a91ade8__0 = 0;
+    vlSelf->top__DOT__my_ps2_keyboard__DOT__w_ptr = 0;
+    vlSelf->top__DOT__my_ps2_keyboard__DOT__r_ptr = 0;
+    vlSelf->top__DOT__my_ps2_keyboard__DOT__count = 0;
+    vlSelf->top__DOT__my_ps2_keyboard__DOT__ps2_clk_sync = 0;
+    vlSelf->top__DOT__my_ps2_keyboard__DOT____Vlvbound_h1a91ade8__0 = 0;
+    vlSelf->__Vdly__top__DOT__ready = 0;
     vlSelf->__Vtrigrprev__TOP__clk = 0;
-    vlSelf->__Vtrigrprev__TOP__led = 0;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg0__b = 0;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg1__b = 0;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg3__b = 0;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg4__b = 0;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg6__b = 0;
-    vlSelf->__Vtrigrprev__TOP__top__DOT____Vcellinp__myseg7__b = 0;
-    vlSelf->__VactDidInit = 0;
+    vlSelf->__Vtrigrprev__TOP__clrn = 0;
 }

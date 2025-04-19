@@ -1,83 +1,135 @@
 module top(
+    //input
+    inout clrn,
     input clk,
-    input rst,
-    input ps2_data,
-    input ps2_clk,
+    input ps2_clk,ps2_data,
 
-    output [7:0] led,
-    output reg [6:0] seg0,
-    output reg [6:0] seg1,
-    output reg [6:0] seg3,
-    output reg [6:0] seg4,
-    output reg [6:0] seg6,
-    output reg [6:0] seg7,
+    //seg
+    //显示ScanCode 键码
+    output [6:0] seg0,
+    output [6:0] seg1,
 
-    output reg [6:0] seg2,
-    output reg [6:0] seg5
+    output [6:0] seg2,//空
+
+    //显示ASCII码
+    output [6:0] seg3,
+    output [6:0] seg4,
+
+    output [6:0] seg5,//空
+
+    //显示按下次数
+    output [6:0] seg6,
+    output [6:0] seg7,    
+
+    //led - overflow
+    output led
 );
-    reg [7:0] count;//储存按下键数
-    reg [7:0] data;//储存键盘接收到的键值信号
-    wire ready;//可读信号，说明data中存在数据可以被读取
-    wire overflow;
-    reg nextdata;//是否读取下一个数据的信号，传回给key_board module读取下一个接受到的信号
-    reg [7:0] ascii_code;
-    reg [7:0] data_Judge[1:0];//用于判断按起以及松开
+    //状态
+    parameter s0 = 2'b00, s1= 2'b01, s2 = 2'b10;
 
-    assign led[7:0] = data;
-    assign seg2[6:0] = 7'b1111111;
-    assign seg5[6:0] = 7'b1111111;
+    //reg
+    reg [7:0] count;                    //计数器，记录按下的次数
+    reg [1:0] current_state,next_state; //现态和次态
+    reg is_working;                     //指示低四位seg是否显示
+    reg [7:0] kb_data;                  //键盘数据
+    reg [7:0] ascii_code;               //ascii码
 
-    always @(posedge clk)begin
-        //复位操作
-        if (~rst) begin
-            count <= 0;
-            data_Judge[0] <= 8'h0;
-            data_Judge[1] <= 8'h0;
-            
-        end
-        //读取操作
-        else begin
-            if (ready)begin
-                nextdata <= 1'b0;
-                data_Judge[1] <= data_Judge[0];
-                data_Judge[0] <= data;
-            end
-        end
-        //按下操作 (前一个数据等于断码，当下数据不等于断码(松开时的断码和通码会先后输出)）
-        if (data_Judge[1] == 8'hf0 && data_Judge[0] != 8'hf0) begin   
-            count <= count+1'b1;
-        end
-        //松开操作(断码存在),关四个灯
-        else if(data_Judge[1]==8'hf0)begin
-            seg0 <= 7'b1111111;
-            seg1 <= 7'b1111111;
-            seg3 <= 7'b1111111;
-            seg4 <= 7'b1111111;
-        end*/
+    //wire
+    wire[7:0] data;         //ps2 输出data
+    wire overflow;          //ps2 溢出信号
+    wire ready;             //ps2 读取信号
+    wire nextdata = 1'b0;   //给ps2 读取的信号
+   
+
+    //组合逻辑
+    assign led = overflow;
+    //初始化
+    initial begin
+        current_state = s0;
+        is_working = 0;
     end
-
-
-//实例化
-    ps2_keyboard my_keyboard(
-        .clk(clk),
-        .rst(rst),
-        .ps2_clk(ps2_clk),
-        .ps2_data(ps2_data),
-        .data(data),
-        .ready(ready),
-        //.overflow(overflow)
-        .nextdata(nextdata)
-    );
     
-    scancode2ascii my_module(
-        .scan(data),
-        .ascii(ascii_code)
-    );
-    bcd7seg myseg0(.b(data[3:0]),.h(seg0));
-    bcd7seg myseg1(.b(data[7:4]),.h(seg1));
-    bcd7seg myseg3(.b(ascii_code[3:0]),.h(seg3));
-    bcd7seg myseg4(.b(ascii_code[7:4]),.h(seg4));
-    bcd7seg myseg6(.b(count[3:0]),.h(seg6));
-    bcd7seg myseg7(.b(count[7:4]),.h(seg7));
-endmodule 
-     
+    always @(posedge clk or negedge clrn) begin
+        //复位
+        if(clrn)begin
+            count <= 0;
+            current_state <= s0;
+        end
+        
+        else begin
+            if(ready) begin
+                $display("receive: %x",data[7:0]);
+
+                //状态转变
+                case(current_state)
+                //静止->按住
+                s0:begin
+                    // if(ready)begin
+                        current_state <= s1;       
+                        is_working <= 1;        //开启数码管显示
+                        kb_data <= data;
+                    // end 
+                end
+                //按住->松开
+                s1:begin      
+                    //识别到断码--松开标志
+                    if(data == 8'hf0 /*&& ready*/)begin
+                        current_state <= s2;
+                        count <= count + 8'b1;
+                        is_working <= 1'b0;
+                    end
+                end
+                // 松开->静止
+                s2:begin
+                    current_state <= s0;   //回归初态
+                end 
+                default:current_state <= s0;
+                endcase
+            end 
+        end    
+    end
+// //输出逻辑
+//     always@(current_state)begin
+//         if(current_state == s1 && ready)begin
+//             kb_data <= data;
+//             $display("acsii : %x",kb_data);
+//             $display("acsii : %x",ascii_code);
+//         end
+//     end
+
+//模块实例化
+//ps2_keyboard
+ps2_keyboard my_ps2_keyboard(
+    .clk      	( clk     ),
+    .clrn     	(~clrn      ),
+    .ps2_clk  	(ps2_clk   ),
+    .ps2_data 	(ps2_data  ),
+    .nextdata 	(nextdata  ),
+    .data     	(data      ),
+    .ready    	(ready     ),
+    .overflow 	(overflow  )
+);
+
+//scancode to ascii
+scancode2ascii u_scancode2ascii(
+    .scan  	(kb_data   ),
+    .ascii 	(ascii_code  )
+);
+
+//bcd7seg
+//scancode
+bcd7seg my_seg0(.b      	(kb_data[3:0]       ),.enable 	(is_working ),.h      	(seg0       ));
+bcd7seg my_seg1(.b      	(kb_data[7:4]       ),.enable 	(is_working  ),.h      	(seg1       ));
+//empty
+bcd7seg my_seg2(.b      	(0       ),.enable 	(0  ),.h      	(seg2       ));//空
+//ascii
+bcd7seg my_seg3(.b      	(ascii_code[3:0]       ),.enable 	(is_working  ),.h      	(seg3       ));
+bcd7seg my_seg4(.b      	(ascii_code[7:4]       ),.enable 	(is_working  ),.h      	(seg4       ));
+//empty
+bcd7seg my_seg5(.b      	(0       ),.enable 	(0  ),.h      	(seg5       ));//空
+//count
+bcd7seg my_seg6(.b      	(count[3:0]       ),.enable 	(1  ),.h      	(seg6       ));
+bcd7seg my_seg7(.b      	(count[7:4]       ),.enable 	(1  ),.h      	(seg7       ));
+
+
+endmodule
